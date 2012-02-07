@@ -1,0 +1,16 @@
+*~
+*.orig
+*.pyc
+*.rej
+.installed.cfg
+__minitage__*
+bin/*
+include/*
+develop-eggs
+downloads
+eggs
+log
+parts
+notesif/media/uploads
+lib
+tmp
