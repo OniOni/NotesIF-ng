@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+    	<title>Notes IF (v2)</title>
+		<link rel="stylesheet" href="{{ STATIC_URL }}/css/index.css" />
+		<script type="text/javascript" src="{{ STATIC_URL }}/js/jquery-1.7.1.min.js" ></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}/js/main.js" ></script>
+		<!--<link rel="shortcut icon" href="" type="image/x-icon" />-->
+	</head>
+<body>
+    <header>
+		<div id="tagline" >
+			<h1>Notes IF</h1>
+			<p>Dernière mise à jour le 
+			   <time datetime="{{ time }}">{{ time_str }} </time></p>
+		</div>
+		<div id="loginbox" >
+			<p>{{ username }}</p>
+			<a href="{{ url_unlog }}">Se déconnecter</a>
+		</div>
+    </header>
+	<aside>
+		<article>
+			
+		</article>
+		<nav>
+			
+		</nav>
+	</aside>
+	<section>
+		{% block content %}
+		{% end block %}
+	</section>
+
+    <footer>
+        <p>
+            <em>Les notes affichées sur ce site sont indicatives.</em>
+        </p>
+        <p>
+            Réalisé par des étudiants IF (Hexanote) avec l'aide du département
+            IF de l'INSA de Lyon.
+        </p>
+    </footer>
+</body>
+</html>
