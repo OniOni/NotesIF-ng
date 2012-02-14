@@ -2,6 +2,7 @@
 *.orig
 *.pyc
 *.rej
+.*.swp
 .installed.cfg
 __minitage__*
 bin/*
