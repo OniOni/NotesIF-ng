@@ -135,6 +135,15 @@ class Contenucontratpedagogique(models.Model):
     class Meta:
         db_table = u'contenucontratpedagogique'
 
+class Contratpedagogique(models.Model):
+    idcontratpedagogique = models.FloatField(primary_key=True, db_column='idContratPedagogique') # Field name made lowercase.
+    idanneeuniversitaire = models.IntegerField(db_column='idAnneeUniversitaire') # Field name made lowercase.
+    idepoque = models.IntegerField(db_column='idEpoque') # Field name made lowercase.
+    credits = models.FloatField(db_column='Credits') # Field name made lowercase.
+    nom = models.CharField(max_length=60, db_column='Nom') # Field name made lowercase.
+    class Meta:
+        db_table = u'contratpedagogique'
+
 class CoursEleve(models.Model):
     ideleve = models.FloatField(db_column='idEleve') # Field name made lowercase.
     idactivite = models.CharField(max_length=24, db_column='idActivite') # Field name made lowercase.
