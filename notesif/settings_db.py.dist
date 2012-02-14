@@ -1,0 +1,10 @@
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', # Choisir parmi 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'notesif',      # Nom de la base MySQL
+        'USER': 'notesif',      # Identifiant MySQL
+        'PASSWORD': 'hackme',   # Mot de passe MySQL
+        'HOST': 'localhost',    # Hôte de connexion MySQL
+        'PORT': '',             # Port de connexion MySQL
+    }
+}

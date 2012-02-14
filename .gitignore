@@ -12,5 +12,6 @@ eggs
 log
 parts
 notesif/media/uploads
+notesif/settings_db.py
 lib
 tmp
