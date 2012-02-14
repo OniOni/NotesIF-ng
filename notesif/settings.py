@@ -1,7 +1,7 @@
 # Django settings for notesif project.
 
 import os.path
-import notesif.settings_db
+import settings_db
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -14,7 +14,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = notesif.settings_db.DATABASES
+DATABASES = settings_db.DATABASES
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -113,7 +113,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'studentapp',
-    'south'
+    'south',
+
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
