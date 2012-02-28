@@ -94,9 +94,25 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django_cas.middleware.CASMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas.backends.CASBackend',
 )
 
 ROOT_URLCONF = 'notesif.urls'
+
+#CAS_SERVER_URL= 'http://login.insa-lyon.fr/cas/'
+CAS_SERVER_URL= 'https://cas.insa-lyon.fr/cas/'
+
+CAS_IGNORE_REFERER = True
+CAS_LOGOUT_COMPLETELY = True
+CAS_RETRY_LOGIN = True
+CAS_VERSION = 2
+CAS_REDIRECT_URL = ROOT_URLCONF
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -114,6 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'studentapp',
     'south',
+    'django_cas',
 
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
