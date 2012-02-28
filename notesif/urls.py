@@ -11,4 +11,7 @@ urlpatterns = patterns('',
     # url(r'^notesif/', include('notesif.foo.urls')),
 
     url(r'^studentapp/', include('notesif.studentapp.urls')),
+    (r'^accounts/login/$', 'django_cas.views.login'),
+	(r'^accounts/logout/$', 'django_cas.views.logout'),
+    
 )
