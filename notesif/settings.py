@@ -99,8 +99,8 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'django_cas.backends.CASBackend',
+	'django.contrib.auth.backends.ModelBackend',
+	'django_cas.backends.CASBackend',
 )
 
 ROOT_URLCONF = 'notesif.urls'
@@ -111,8 +111,7 @@ CAS_SERVER_URL= 'https://cas.insa-lyon.fr/cas/'
 CAS_IGNORE_REFERER = True
 CAS_LOGOUT_COMPLETELY = True
 CAS_RETRY_LOGIN = True
-CAS_VERSION = 2
-CAS_REDIRECT_URL = ROOT_URLCONF
+CAS_REDIRECT_URL = '/'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
