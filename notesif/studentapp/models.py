@@ -209,7 +209,7 @@ class EtudiantContratpedagogique(models.Model):
         db_table = u'etudiant_contratpedagogique'
 
 class Laniere(models.Model):
-    idlaniere = models.IntegerField(primary_key=True,max_length=9, db_column='idLaniere') # Field name made lowercase.
+    idlaniere = models.CharField(primary_key=True,max_length=9, db_column='idLaniere') # Field name made lowercase.
     nom = models.CharField(max_length=78, db_column='Nom') # Field name made lowercase.
     barreds = models.FloatField(db_column='BarreDS') # Field name made lowercase.
     barretp = models.FloatField(db_column='BarreTP') # Field name made lowercase.
@@ -220,7 +220,7 @@ class Laniere(models.Model):
         db_table = u'laniere'
 
 class Matiere(models.Model):
-    idmatiere = models.IntegerField(primary_key=True,max_length=18, db_column='idMatiere') # Field name made lowercase.
+    idmatiere = models.CharField(primary_key=True,max_length=18, db_column='idMatiere') # Field name made lowercase.
     idlaniere = models.ForeignKey('Laniere',max_length=9, db_column='idLaniere') # Field name made lowercase.
     nom = models.CharField(max_length=210, db_column='Nom') # Field name made lowercase.
     annee = models.IntegerField(db_column='Annee') # Field name made lowercase.
@@ -252,7 +252,7 @@ class News(models.Model):
 class Note(models.Model):
     #idnote = models.IntegerField(primary_key=True, db_column='idNote') # Field name made lowercase.
     ideleve = models.ForeignKey('Eleve',db_column='idEleve',primary_key=True) # Field name made lowercase.
-    idactivite = models.ForeignKey('Activite',max_length=24, db_column='idActivite',primary_key=True) # Field name made lowercase.
+    idactivite = models.ForeignKey('Activite',max_length=24, db_column='idActivite', to_field='idactivite') # Field name made lowercase.
     auteur = models.CharField(max_length=30, db_column='Auteur') # Field name made lowercase.
     date = models.DateTimeField(db_column='Date') # Field name made lowercase.
     ip = models.CharField(max_length=45, db_column='IP') # Field name made lowercase.
