@@ -17,3 +17,4 @@ notesif/settings_db.py
 lib
 tmp
 .idea/
+*.idea/
