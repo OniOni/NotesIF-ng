@@ -16,4 +16,4 @@ notesif/media/uploads
 notesif/settings_db.py
 lib
 tmp
-.idea
+.idea/

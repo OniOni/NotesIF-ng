@@ -10,5 +10,5 @@ urlpatterns = patterns('',
     # url(r'^$', 'notesif.views.home', name='home'),
     # url(r'^notesif/', include('notesif.foo.urls')),
 
-    url(r'^studentapp/', include('notesif.studentapp.urls')),
+    url(r'^', include('notesif.studentapp.urls')),
 )
