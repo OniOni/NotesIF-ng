@@ -10,29 +10,31 @@
 	</head>
 <body>
     <header>
-		<div id="tagline" >
+		<hgroup id="tagline">
 			<h1>Notes IF</h1>
-			<p>Dernière mise à jour le 
-			   <time datetime="{{ time }}">{{ time_str }} </time></p>
-		</div>
+			<p>
+                Dernière mise à jour le
+			    <time datetime="{{ updated_time }}">{{ updated_time|date:"d/m/Y à H:s" }}</time>
+            </p>
+		</hgroup>
 		<div id="loginbox" >
 			<p>{{ username }}</p>
 			<a href="{{ url_unlog }}">Se déconnecter</a>
 		</div>
     </header>
 	<aside>
-		<article>
-			
-		</article>
+		<article id="moybox">
+			<h2>Votre moyenne : <strong>12.25</strong><em>/ 20</em></h2>
+            <p class="classement"><strong>49</strong><sup>ème</sup></p>
+        </article>
 		<nav>
 			
 		</nav>
 	</aside>
-	<section>
+	<section id="main-content">
 		{% block content %}
 		{% endblock %}
 	</section>
-
     <footer>
         <p>
             <em>Les notes affichées sur ce site sont indicatives.</em>

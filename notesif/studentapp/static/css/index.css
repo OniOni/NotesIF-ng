@@ -1,0 +1,98 @@
+html {
+    background-color: #d4d4be;
+}
+
+body {
+    font-family: "Ubuntu","Trebuchet MS",sans-serif;
+    font-size: 11pt;
+    margin: 0;
+}
+
+header {
+    padding: 5px 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.5);
+    background-color: #C4D19B;
+    overflow: hidden;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+}
+
+header hgroup {
+    float: left;
+}
+
+header hgroup h1 {
+    line-height: 1em;
+    margin: 10px 0 2px 0;
+}
+header hgroup p {
+    margin: 8px 0;
+}
+header hgroup {
+    margin-left: 10px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+}
+
+header #loginbox {
+    float: right;
+}
+
+body > aside {
+    float: left;
+    margin-left: 20px;
+    width: 180px;
+}
+
+aside #moybox {
+    position: relative;
+    height: 80px;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+aside #moybox h2 {
+    font-size: 9pt;
+    font-weight: normal;
+    margin: 0;
+    margin-top: 10px;
+}
+
+aside #moybox h2 strong {
+    display: block;
+    position: absolute;
+    right: 10px;
+    margin: 0;
+    line-height: 1em;
+    font-size: 20pt;
+    top: 0;
+}
+aside #moybox h2 em {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 20pt;
+}
+
+aside #moybox .classement {
+    margin: 0;
+    margin-top: 2px;
+    font-size: 18pt;
+}
+aside #moybox .classement sup {
+    vertical-align: top;
+    font-size: 10pt;
+    margin-left: 3px;
+}
+
+section#main-content {
+    margin-left: 200px;
+    min-height: 500px;
+    background-color: white;
+    border-bottom-left-radius: 10px;
+    box-shadow: -5px 5px 8px rgba(0,0,0,0.2);
+}
+
+footer {
+    clear: both;
+    text-align: center;
+    font-size: 0.8rem;
+}
