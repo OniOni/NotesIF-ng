@@ -10,10 +10,10 @@ class PopulatedCASBackend(CASBackend):
         user = super(PopulatedCASBackend, self).authenticate(
         ticket, service)
 
-        print user.username
+        
 
         l = ldap.initialize("ldap://auth.insa-lyon.fr")
-        u = l.search_s('dc=insa-lyon,dc=fr', ldap.SCOPE_SUBTREE, "uid="+user.username, attrlist=["givenname", "sn", "displayname", "mail", "telephonenumber","supannentiteaffectation","roomnumber","street","employeetype","uidnumber", "gidnumber","employeenumber","businesscategory","uid","departmentnumber", "supannEtuId"])
+        u = l.search_s('dc=insa-lyon,dc=fr', ldap.SCOPE_SUBTREE, "uid="+user.username, attrlist=["employeeType", "supannEtuId"])
         
         if not u:
             print "User is not in LDAP..."
@@ -25,6 +25,8 @@ class PopulatedCASBackend(CASBackend):
         else:
             print "User is not a Student"
             
-        print u
+        user.id_from_ldap = u[0][1]['supannEtuId'][0]
+        
+        print user.username + " with id " + user.id_from_ldap + " just connected."
 
         return user
