@@ -86,9 +86,50 @@ aside #moybox .classement sup {
 section#main-content {
     margin-left: 200px;
     min-height: 500px;
+    padding:4px;
     background-color: white;
     border-bottom-left-radius: 10px;
     box-shadow: -5px 5px 8px rgba(0,0,0,0.2);
+}
+
+.laniere_group hgroup {
+	overflow : hidden;
+}
+
+.laniere_group hgroup h2 {
+	float : left;
+	height : 10px;
+	font-size : 8px;
+}
+
+.laniere_group hgroup p {
+	float : right;
+	height : 10px;
+	font-size : 8px;
+}
+
+.ValidationA { color : #5CB94F;}
+.ValidationB { color : #0080C0;}
+.ValidationC { color : #808000 ;}
+.ValidationD { color : #D79E35;}
+.ValidationE { color : #FF8000;}
+.ValidationF { color : #FF0000;}
+.ValidationR { color : #FF8000;}
+.ValidationX { color : #FFFFFF;}
+.Validation { color : #000000;}
+
+.laniere_group table {
+	border-collapse: collapse; 
+}
+
+.laniere_group thead {
+	background-color: #007020; 
+	color : white;
+	font-weight: bold;
+}
+
+.laniere_group td,th {
+	border: 1px solid black;
 }
 
 footer {

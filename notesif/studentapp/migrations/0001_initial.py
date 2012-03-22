@@ -10,37 +10,34 @@ class Migration(SchemaMigration):
         
         # Adding model 'Log'
         db.create_table(u'LOG', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('auteur', self.gf('django.db.models.fields.CharField')(max_length=30, db_column='Auteur')),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(db_column='Date')),
-            ('ip', self.gf('django.db.models.fields.CharField')(max_length=45, db_column='IP')),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(primary_key=True, db_column='Date')),
+            ('ip', self.gf('django.db.models.fields.CharField')(max_length=45, primary_key=True, db_column='IP')),
             ('action', self.gf('django.db.models.fields.TextField')(db_column='Action')),
         ))
         db.send_create_signal('studentapp', ['Log'])
 
         # Adding model 'LogEleve'
         db.create_table(u'LOG_eleve', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.CharField')(max_length=60)),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(db_column='Date')),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.User'], max_length=60, primary_key=True, db_column='uid')),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(primary_key=True, db_column='Date')),
             ('ip', self.gf('django.db.models.fields.CharField')(max_length=45, db_column='IP')),
         ))
         db.send_create_signal('studentapp', ['LogEleve'])
 
         # Adding model 'Absence'
         db.create_table(u'absence', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('ideleve', self.gf('django.db.models.fields.FloatField')(db_column='idEleve')),
-            ('date', self.gf('django.db.models.fields.DateField')(db_column='Date')),
-            ('idactivite', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idActivite')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], primary_key=True, db_column='idEleve')),
+            ('date', self.gf('django.db.models.fields.DateField')(primary_key=True, db_column='Date')),
+            ('idactivite', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Activite'], max_length=24, primary_key=True, db_column='idActivite')),
         ))
         db.send_create_signal('studentapp', ['Absence'])
 
         # Adding model 'Activite'
         db.create_table(u'activite', (
-            ('idactivite', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idActivite')),
-            ('idmatiere', self.gf('django.db.models.fields.CharField')(max_length=18, db_column='idMatiere')),
-            ('type', self.gf('django.db.models.fields.CharField')(max_length=3, db_column='Type')),
+            ('idactivite', self.gf('django.db.models.fields.CharField')(unique=True, max_length=24, db_column='idActivite')),
+            ('idmatiere', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Matiere'], max_length=18, db_column='idMatiere')),
+            ('type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Typeactivite'], max_length=3, db_column='Type')),
             ('coefficient', self.gf('django.db.models.fields.FloatField')(db_column='Coefficient')),
             ('nom', self.gf('django.db.models.fields.CharField')(max_length=768, db_column='Nom')),
             ('nbhprevu', self.gf('django.db.models.fields.IntegerField')(db_column='NbHPrevu')),
@@ -54,8 +51,7 @@ class Migration(SchemaMigration):
 
         # Adding model 'Admins'
         db.create_table(u'admins', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('login', self.gf('django.db.models.fields.CharField')(max_length=60)),
+            ('login', self.gf('django.db.models.fields.CharField')(max_length=60, primary_key=True)),
         ))
         db.send_create_signal('studentapp', ['Admins'])
 
@@ -70,9 +66,8 @@ class Migration(SchemaMigration):
 
         # Adding model 'BilanActivite'
         db.create_table(u'bilan_activite', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('idanneeuniversitaire', self.gf('django.db.models.fields.IntegerField')(db_column='idAnneeUniversitaire')),
-            ('idactivite', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idActivite')),
+            ('idanneeuniversitaire', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Anneeuniversitaire'], primary_key=True, db_column='idAnneeUniversitaire')),
+            ('idactivite', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Activite'], max_length=24, primary_key=True, db_column='idActivite')),
             ('min', self.gf('django.db.models.fields.FloatField')()),
             ('max', self.gf('django.db.models.fields.FloatField')()),
             ('moyenne', self.gf('django.db.models.fields.FloatField')()),
@@ -84,8 +79,8 @@ class Migration(SchemaMigration):
         # Adding model 'BilanEleve'
         db.create_table(u'bilan_eleve', (
             ('idbilaneleve', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idBilanEleve')),
-            ('ideleve', self.gf('django.db.models.fields.IntegerField')(db_column='idEleve')),
-            ('idcontratpedagogique', self.gf('django.db.models.fields.IntegerField')(db_column='idContratPedagogique')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], db_column='idEleve')),
+            ('idcontratpedagogique', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Contratpedagogique'], db_column='idContratPedagogique')),
             ('moyenne', self.gf('django.db.models.fields.FloatField')()),
             ('moyenneds', self.gf('django.db.models.fields.FloatField')(db_column='moyenneDS')),
             ('coefficientds', self.gf('django.db.models.fields.FloatField')(db_column='coefficientDS')),
@@ -111,7 +106,7 @@ class Migration(SchemaMigration):
         # Adding model 'BilanLaniere'
         db.create_table(u'bilan_laniere', (
             ('idbilanlaniere', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idBilanLaniere')),
-            ('ideleve', self.gf('django.db.models.fields.IntegerField')(db_column='idEleve')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], db_column='idEleve')),
             ('moyenne', self.gf('django.db.models.fields.FloatField')()),
             ('moyenneds', self.gf('django.db.models.fields.FloatField')(db_column='moyenneDS')),
             ('coefficientds', self.gf('django.db.models.fields.FloatField')(db_column='coefficientDS')),
@@ -119,7 +114,7 @@ class Migration(SchemaMigration):
             ('coefficienttp', self.gf('django.db.models.fields.FloatField')(db_column='coefficientTP')),
             ('classement', self.gf('django.db.models.fields.IntegerField')()),
             ('nbeleves', self.gf('django.db.models.fields.IntegerField')(db_column='nbEleves')),
-            ('idlaniere', self.gf('django.db.models.fields.CharField')(max_length=9, db_column='idLaniere')),
+            ('idlaniere', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Laniere'], max_length=9, db_column='idLaniere')),
             ('qualification', self.gf('django.db.models.fields.CharField')(max_length=3)),
             ('rattrapage', self.gf('django.db.models.fields.CharField')(max_length=1)),
             ('ectsvalides', self.gf('django.db.models.fields.IntegerField')(db_column='ectsValides')),
@@ -129,7 +124,7 @@ class Migration(SchemaMigration):
         # Adding model 'BilanMatiere'
         db.create_table(u'bilan_matiere', (
             ('idbilanmatiere', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idBilanMatiere')),
-            ('ideleve', self.gf('django.db.models.fields.IntegerField')(db_column='idEleve')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], db_column='idEleve')),
             ('moyenne', self.gf('django.db.models.fields.FloatField')()),
             ('moyenneds', self.gf('django.db.models.fields.FloatField')(db_column='moyenneDS')),
             ('coefficientds', self.gf('django.db.models.fields.FloatField')(db_column='coefficientDS')),
@@ -137,31 +132,40 @@ class Migration(SchemaMigration):
             ('coefficienttp', self.gf('django.db.models.fields.FloatField')(db_column='coefficientTP')),
             ('classement', self.gf('django.db.models.fields.IntegerField')()),
             ('nbeleves', self.gf('django.db.models.fields.IntegerField')(db_column='nbEleves')),
-            ('idmatiere', self.gf('django.db.models.fields.CharField')(max_length=18, db_column='idMatiere')),
+            ('idmatiere', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Matiere'], max_length=18, db_column='idMatiere')),
             ('qualification', self.gf('django.db.models.fields.CharField')(max_length=3)),
         ))
         db.send_create_signal('studentapp', ['BilanMatiere'])
 
         # Adding model 'Contenucontratpedagogique'
         db.create_table(u'contenucontratpedagogique', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('idcontratpedagogique', self.gf('django.db.models.fields.FloatField')(db_column='idContratPedagogique')),
-            ('idmatiereyoratooid', self.gf('django.db.models.fields.CharField')(max_length=30, db_column='idMatiereYoratooID')),
+            ('idcontratpedagogique', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Contratpedagogique'], primary_key=True, db_column='idContratPedagogique')),
+            ('idmatiereyoratooid', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Matiere'], max_length=30, primary_key=True, db_column='idMatiereYoratooID')),
             ('coefficient', self.gf('django.db.models.fields.FloatField')(db_column='Coefficient')),
         ))
         db.send_create_signal('studentapp', ['Contenucontratpedagogique'])
 
+        # Adding model 'Contratpedagogique'
+        db.create_table(u'contratpedagogique', (
+            ('idcontratpedagogique', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idContratPedagogique')),
+            ('idanneeuniversitaire', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Anneeuniversitaire'], db_column='idAnneeUniversitaire')),
+            ('idepoque', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Epoque'], db_column='idEpoque')),
+            ('credits', self.gf('django.db.models.fields.FloatField')(db_column='Credits')),
+            ('nom', self.gf('django.db.models.fields.CharField')(max_length=60, db_column='Nom')),
+        ))
+        db.send_create_signal('studentapp', ['Contratpedagogique'])
+
         # Adding model 'CoursEleve'
         db.create_table(u'cours_eleve', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('ideleve', self.gf('django.db.models.fields.FloatField')(db_column='idEleve')),
-            ('idactivite', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idActivite')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], primary_key=True, db_column='idEleve')),
+            ('idactivite', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Activite'], max_length=24, primary_key=True, db_column='idActivite')),
         ))
         db.send_create_signal('studentapp', ['CoursEleve'])
 
         # Adding model 'CreditsEtranger'
         db.create_table(u'credits_etranger', (
-            ('ideleve', self.gf('django.db.models.fields.FloatField')(primary_key=True, db_column='idEleve')),
+            ('idcreditsetranger', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idCreditsEtranger')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], db_column='idEleve')),
             ('credits', self.gf('django.db.models.fields.IntegerField')()),
             ('etablissement', self.gf('django.db.models.fields.CharField')(max_length=120)),
             ('auteur', self.gf('django.db.models.fields.CharField')(max_length=30, db_column='Auteur')),
@@ -172,12 +176,11 @@ class Migration(SchemaMigration):
 
         # Adding model 'Dispense'
         db.create_table(u'dispense', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('ideleve', self.gf('django.db.models.fields.FloatField')(db_column='idEleve')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], primary_key=True, db_column='idEleve')),
             ('auteur', self.gf('django.db.models.fields.CharField')(max_length=30, db_column='Auteur')),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(db_column='Date')),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(primary_key=True, db_column='Date')),
             ('raison', self.gf('django.db.models.fields.CharField')(max_length=120, db_column='Raison')),
-            ('idactivite', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idActivite')),
+            ('idactivite', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Activite'], max_length=24, primary_key=True, db_column='idActivite')),
             ('ip', self.gf('django.db.models.fields.CharField')(max_length=45, db_column='IP')),
             ('type', self.gf('django.db.models.fields.CharField')(max_length=3, db_column='Type')),
         ))
@@ -185,7 +188,7 @@ class Migration(SchemaMigration):
 
         # Adding model 'Eleve'
         db.create_table(u'eleve', (
-            ('ideleve', self.gf('django.db.models.fields.FloatField')(primary_key=True, db_column='idEleve')),
+            ('ideleve', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idEleve')),
             ('nom', self.gf('django.db.models.fields.CharField')(max_length=120, db_column='Nom')),
             ('nomreseau', self.gf('django.db.models.fields.CharField')(max_length=90, db_column='NomReseau')),
             ('binomes1', self.gf('django.db.models.fields.IntegerField')(db_column='Binomes1')),
@@ -197,7 +200,7 @@ class Migration(SchemaMigration):
             ('datenaissance', self.gf('django.db.models.fields.DateField')(db_column='DateNaissance')),
             ('origine', self.gf('django.db.models.fields.CharField')(max_length=3, db_column='Origine')),
             ('mail', self.gf('django.db.models.fields.CharField')(max_length=150)),
-            ('type', self.gf('django.db.models.fields.CharField')(max_length=3, db_column='Type')),
+            ('type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], max_length=3, db_column='Type')),
             ('tuteur', self.gf('django.db.models.fields.CharField')(max_length=6, db_column='Tuteur')),
         ))
         db.send_create_signal('studentapp', ['Eleve'])
@@ -206,15 +209,15 @@ class Migration(SchemaMigration):
         db.create_table(u'epoque', (
             ('idepoque', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idEpoque')),
             ('nom', self.gf('django.db.models.fields.CharField')(max_length=60, db_column='Nom')),
-            ('annee', self.gf('django.db.models.fields.IntegerField')(db_column='Annee')),
+            ('annee', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Anneeuniversitaire'], db_column='Annee')),
             ('semestre', self.gf('django.db.models.fields.IntegerField')(db_column='Semestre')),
         ))
         db.send_create_signal('studentapp', ['Epoque'])
 
         # Adding model 'EtudiantContratpedagogique'
         db.create_table(u'etudiant_contratpedagogique', (
-            ('ideleve', self.gf('django.db.models.fields.FloatField')(primary_key=True, db_column='idEleve')),
-            ('idcontratpedagogique', self.gf('django.db.models.fields.FloatField')(db_column='idContratPedagogique')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], primary_key=True, db_column='idEleve')),
+            ('idcontratpedagogique', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Contratpedagogique'], primary_key=True, db_column='idContratPedagogique')),
             ('valide', self.gf('django.db.models.fields.CharField')(max_length=1, db_column='Valide')),
             ('classementvisible', self.gf('django.db.models.fields.IntegerField')(db_column='ClassementVisible')),
         ))
@@ -222,22 +225,20 @@ class Migration(SchemaMigration):
 
         # Adding model 'Laniere'
         db.create_table(u'laniere', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('idlaniere', self.gf('django.db.models.fields.CharField')(max_length=9, db_column='idLaniere')),
+            ('idlaniere', self.gf('django.db.models.fields.CharField')(max_length=9, primary_key=True, db_column='idLaniere')),
             ('nom', self.gf('django.db.models.fields.CharField')(max_length=78, db_column='Nom')),
             ('barreds', self.gf('django.db.models.fields.FloatField')(db_column='BarreDS')),
             ('barretp', self.gf('django.db.models.fields.FloatField')(db_column='BarreTP')),
             ('barregenerale', self.gf('django.db.models.fields.FloatField')(db_column='BarreGenerale')),
             ('nomreseau', self.gf('django.db.models.fields.CharField')(max_length=45, db_column='NomReseau')),
-            ('nomen', self.gf('django.db.models.fields.CharField')(max_length=150, db_column='NomEn')),
+            ('nomen', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Profs'], max_length=150, db_column='NomEn')),
         ))
         db.send_create_signal('studentapp', ['Laniere'])
 
         # Adding model 'Matiere'
         db.create_table(u'matiere', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('idmatiere', self.gf('django.db.models.fields.CharField')(max_length=18, db_column='idMatiere')),
-            ('idlaniere', self.gf('django.db.models.fields.CharField')(max_length=9, db_column='idLaniere')),
+            ('idmatiere', self.gf('django.db.models.fields.CharField')(max_length=18, primary_key=True, db_column='idMatiere')),
+            ('idlaniere', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Laniere'], max_length=9, db_column='idLaniere')),
             ('nom', self.gf('django.db.models.fields.CharField')(max_length=210, db_column='Nom')),
             ('annee', self.gf('django.db.models.fields.IntegerField')(db_column='Annee')),
             ('credits', self.gf('django.db.models.fields.FloatField')(db_column='Credits')),
@@ -251,26 +252,26 @@ class Migration(SchemaMigration):
             ('idmessage', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='IDMessage')),
             ('message', self.gf('django.db.models.fields.CharField')(max_length=765, db_column='Message')),
             ('date', self.gf('django.db.models.fields.DateField')(db_column='Date')),
-            ('annee', self.gf('django.db.models.fields.CharField')(max_length=3, db_column='Annee')),
+            ('annee', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Anneeuniversitaire'], max_length=3, db_column='Annee')),
         ))
         db.send_create_signal('studentapp', ['MessagesEleve'])
 
         # Adding model 'News'
         db.create_table(u'news', (
-            ('date', self.gf('django.db.models.fields.DateTimeField')(primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idNews')),
+            ('date', self.gf('django.db.models.fields.DateTimeField')()),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=765)),
             ('link', self.gf('django.db.models.fields.CharField')(max_length=765)),
             ('description', self.gf('django.db.models.fields.TextField')()),
             ('author', self.gf('django.db.models.fields.CharField')(max_length=765)),
-            ('annee', self.gf('django.db.models.fields.IntegerField')()),
+            ('annee', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Anneeuniversitaire'], db_column='Anne')),
         ))
         db.send_create_signal('studentapp', ['News'])
 
         # Adding model 'Note'
         db.create_table(u'note', (
-            ('idnote', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idNote')),
-            ('ideleve', self.gf('django.db.models.fields.FloatField')(db_column='idEleve')),
-            ('idactivite', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idActivite')),
+            ('ideleve', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Eleve'], primary_key=True, db_column='idEleve')),
+            ('idactivite', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Activite'], to_field='idactivite', max_length=24, db_column='idActivite')),
             ('auteur', self.gf('django.db.models.fields.CharField')(max_length=30, db_column='Auteur')),
             ('date', self.gf('django.db.models.fields.DateTimeField')(db_column='Date')),
             ('ip', self.gf('django.db.models.fields.CharField')(max_length=45, db_column='IP')),
@@ -283,10 +284,10 @@ class Migration(SchemaMigration):
 
         # Adding model 'Plage'
         db.create_table(u'plage', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('idplage', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idPlage')),
-            ('annee', self.gf('django.db.models.fields.CharField')(max_length=3, db_column='Annee')),
-            ('idactivite', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idActivite')),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idPlage')),
+            ('idplage', self.gf('django.db.models.fields.CharField')(max_length=24, primary_key=True, db_column='idPlage')),
+            ('annee', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Anneeuniversitaire'], max_length=3, db_column='Annee')),
+            ('idactivite', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Activite'], max_length=24, db_column='idActivite')),
             ('semaine', self.gf('django.db.models.fields.IntegerField')(db_column='Semaine')),
             ('jour', self.gf('django.db.models.fields.IntegerField')(db_column='Jour')),
         ))
@@ -294,16 +295,14 @@ class Migration(SchemaMigration):
 
         # Adding model 'Profactivite'
         db.create_table(u'profactivite', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('idprof', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idProf')),
-            ('idactivite', self.gf('django.db.models.fields.CharField')(max_length=24, db_column='idActivite')),
+            ('idprof', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Profs'], max_length=24, primary_key=True, db_column='idProf')),
+            ('idactivite', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Activite'], max_length=24, primary_key=True, db_column='idActivite')),
         ))
         db.send_create_signal('studentapp', ['Profactivite'])
 
         # Adding model 'Profs'
         db.create_table(u'profs', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('idprof', self.gf('django.db.models.fields.CharField')(max_length=6, db_column='idProf')),
+            ('idprof', self.gf('django.db.models.fields.IntegerField')(max_length=6, primary_key=True, db_column='idProf')),
             ('nom', self.gf('django.db.models.fields.CharField')(max_length=60, db_column='Nom')),
             ('prenom', self.gf('django.db.models.fields.CharField')(max_length=45, db_column='Prenom')),
             ('nomreseau', self.gf('django.db.models.fields.CharField')(max_length=45, db_column='NomReseau')),
@@ -313,22 +312,24 @@ class Migration(SchemaMigration):
 
         # Adding model 'ResponsableLaniere'
         db.create_table(u'responsable_laniere', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('nomreseau', self.gf('django.db.models.fields.CharField')(max_length=45, db_column='NomReseau')),
-            ('idlaniere', self.gf('django.db.models.fields.CharField')(max_length=6, db_column='idLaniere')),
+            ('idprof', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Profs'], primary_key=True, db_column='idProf')),
+            ('idlaniere', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['studentapp.Laniere'], max_length=6, primary_key=True, db_column='idLaniere')),
             ('annee', self.gf('django.db.models.fields.IntegerField')(db_column='Annee')),
         ))
         db.send_create_signal('studentapp', ['ResponsableLaniere'])
 
         # Adding model 'TypeEleve'
         db.create_table(u'type_eleve', (
-            ('type', self.gf('django.db.models.fields.CharField')(max_length=3, primary_key=True, db_column='Type')),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idTypeEleve')),
+            ('type', self.gf('django.db.models.fields.CharField')(max_length=3, db_column='Type')),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=90, db_column='Description')),
         ))
         db.send_create_signal('studentapp', ['TypeEleve'])
 
         # Adding model 'Typeactivite'
         db.create_table(u'typeactivite', (
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idTypeActivite')),
             ('type', self.gf('django.db.models.fields.CharField')(max_length=3, primary_key=True, db_column='Type')),
             ('nomactivite', self.gf('django.db.models.fields.CharField')(max_length=60, db_column='NomActivite')),
         ))
@@ -336,12 +337,20 @@ class Migration(SchemaMigration):
 
         # Adding model 'User'
         db.create_table(u'user', (
-            ('uid', self.gf('django.db.models.fields.CharField')(max_length=90, primary_key=True)),
+            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idUser')),
+            ('uid', self.gf('django.db.models.fields.CharField')(max_length=90)),
             ('upass', self.gf('django.db.models.fields.CharField')(max_length=60)),
             ('utype', self.gf('django.db.models.fields.CharField')(max_length=6, blank=True)),
             ('sno', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
         ))
         db.send_create_signal('studentapp', ['User'])
+
+        # Adding model 'UserProfile'
+        db.create_table('studentapp_userprofile', (
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['studentapp.User'], unique=True)),
+            ('id_from_ldap', self.gf('django.db.models.fields.IntegerField')(primary_key=True, db_column='idUserProfile')),
+        ))
+        db.send_create_signal('studentapp', ['UserProfile'])
 
 
     def backwards(self, orm):
@@ -378,6 +387,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Contenucontratpedagogique'
         db.delete_table(u'contenucontratpedagogique')
+
+        # Deleting model 'Contratpedagogique'
+        db.delete_table(u'contratpedagogique')
 
         # Deleting model 'CoursEleve'
         db.delete_table(u'cours_eleve')
@@ -433,33 +445,34 @@ class Migration(SchemaMigration):
         # Deleting model 'User'
         db.delete_table(u'user')
 
+        # Deleting model 'UserProfile'
+        db.delete_table('studentapp_userprofile')
+
 
     models = {
         'studentapp.absence': {
             'Meta': {'object_name': 'Absence', 'db_table': "u'absence'"},
-            'date': ('django.db.models.fields.DateField', [], {'db_column': "'Date'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idactivite': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idActivite'"}),
-            'ideleve': ('django.db.models.fields.FloatField', [], {'db_column': "'idEleve'"})
+            'date': ('django.db.models.fields.DateField', [], {'primary_key': 'True', 'db_column': "'Date'"}),
+            'idactivite': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Activite']", 'max_length': '24', 'primary_key': 'True', 'db_column': "'idActivite'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'primary_key': 'True', 'db_column': "'idEleve'"})
         },
         'studentapp.activite': {
             'Meta': {'object_name': 'Activite', 'db_table': "u'activite'"},
             'annee': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Annee'"}),
             'coefficient': ('django.db.models.fields.FloatField', [], {'db_column': "'Coefficient'"}),
             'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'ID'"}),
-            'idactivite': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idActivite'"}),
-            'idmatiere': ('django.db.models.fields.CharField', [], {'max_length': '18', 'db_column': "'idMatiere'"}),
+            'idactivite': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '24', 'db_column': "'idActivite'"}),
+            'idmatiere': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Matiere']", 'max_length': '18', 'db_column': "'idMatiere'"}),
             'nbhprevu': ('django.db.models.fields.IntegerField', [], {'db_column': "'NbHPrevu'"}),
             'nom': ('django.db.models.fields.CharField', [], {'max_length': '768', 'db_column': "'Nom'"}),
             'notevisible': ('django.db.models.fields.CharField', [], {'max_length': '1', 'db_column': "'NoteVisible'"}),
             'sansnote': ('django.db.models.fields.IntegerField', [], {'db_column': "'SansNote'"}),
             'semestre': ('django.db.models.fields.IntegerField', [], {'db_column': "'Semestre'"}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Type'"})
+            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Typeactivite']", 'max_length': '3', 'db_column': "'Type'"})
         },
         'studentapp.admins': {
             'Meta': {'object_name': 'Admins', 'db_table': "u'admins'"},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'login': ('django.db.models.fields.CharField', [], {'max_length': '60'})
+            'login': ('django.db.models.fields.CharField', [], {'max_length': '60', 'primary_key': 'True'})
         },
         'studentapp.anneeuniversitaire': {
             'Meta': {'object_name': 'Anneeuniversitaire', 'db_table': "u'anneeuniversitaire'"},
@@ -471,9 +484,8 @@ class Migration(SchemaMigration):
         'studentapp.bilanactivite': {
             'Meta': {'object_name': 'BilanActivite', 'db_table': "u'bilan_activite'"},
             'ecart_type': ('django.db.models.fields.FloatField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idactivite': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idActivite'"}),
-            'idanneeuniversitaire': ('django.db.models.fields.IntegerField', [], {'db_column': "'idAnneeUniversitaire'"}),
+            'idactivite': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Activite']", 'max_length': '24', 'primary_key': 'True', 'db_column': "'idActivite'"}),
+            'idanneeuniversitaire': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Anneeuniversitaire']", 'primary_key': 'True', 'db_column': "'idAnneeUniversitaire'"}),
             'max': ('django.db.models.fields.FloatField', [], {}),
             'min': ('django.db.models.fields.FloatField', [], {}),
             'moyenne': ('django.db.models.fields.FloatField', [], {}),
@@ -491,8 +503,8 @@ class Migration(SchemaMigration):
             'ectsvalides': ('django.db.models.fields.IntegerField', [], {'db_column': "'ectsValides'"}),
             'exclusion': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
             'idbilaneleve': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idBilanEleve'"}),
-            'idcontratpedagogique': ('django.db.models.fields.IntegerField', [], {'db_column': "'idContratPedagogique'"}),
-            'ideleve': ('django.db.models.fields.IntegerField', [], {'db_column': "'idEleve'"}),
+            'idcontratpedagogique': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Contratpedagogique']", 'db_column': "'idContratPedagogique'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'db_column': "'idEleve'"}),
             'moyenne': ('django.db.models.fields.FloatField', [], {}),
             'moyenneds': ('django.db.models.fields.FloatField', [], {'db_column': "'moyenneDS'"}),
             'moyennenorm': ('django.db.models.fields.FloatField', [], {'db_column': "'moyenneNorm'"}),
@@ -511,8 +523,8 @@ class Migration(SchemaMigration):
             'coefficienttp': ('django.db.models.fields.FloatField', [], {'db_column': "'coefficientTP'"}),
             'ectsvalides': ('django.db.models.fields.IntegerField', [], {'db_column': "'ectsValides'"}),
             'idbilanlaniere': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idBilanLaniere'"}),
-            'ideleve': ('django.db.models.fields.IntegerField', [], {'db_column': "'idEleve'"}),
-            'idlaniere': ('django.db.models.fields.CharField', [], {'max_length': '9', 'db_column': "'idLaniere'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'db_column': "'idEleve'"}),
+            'idlaniere': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Laniere']", 'max_length': '9', 'db_column': "'idLaniere'"}),
             'moyenne': ('django.db.models.fields.FloatField', [], {}),
             'moyenneds': ('django.db.models.fields.FloatField', [], {'db_column': "'moyenneDS'"}),
             'moyennetp': ('django.db.models.fields.FloatField', [], {'db_column': "'moyenneTP'"}),
@@ -526,8 +538,8 @@ class Migration(SchemaMigration):
             'coefficientds': ('django.db.models.fields.FloatField', [], {'db_column': "'coefficientDS'"}),
             'coefficienttp': ('django.db.models.fields.FloatField', [], {'db_column': "'coefficientTP'"}),
             'idbilanmatiere': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idBilanMatiere'"}),
-            'ideleve': ('django.db.models.fields.IntegerField', [], {'db_column': "'idEleve'"}),
-            'idmatiere': ('django.db.models.fields.CharField', [], {'max_length': '18', 'db_column': "'idMatiere'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'db_column': "'idEleve'"}),
+            'idmatiere': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Matiere']", 'max_length': '18', 'db_column': "'idMatiere'"}),
             'moyenne': ('django.db.models.fields.FloatField', [], {}),
             'moyenneds': ('django.db.models.fields.FloatField', [], {'db_column': "'moyenneDS'"}),
             'moyennetp': ('django.db.models.fields.FloatField', [], {'db_column': "'moyenneTP'"}),
@@ -537,15 +549,21 @@ class Migration(SchemaMigration):
         'studentapp.contenucontratpedagogique': {
             'Meta': {'object_name': 'Contenucontratpedagogique', 'db_table': "u'contenucontratpedagogique'"},
             'coefficient': ('django.db.models.fields.FloatField', [], {'db_column': "'Coefficient'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idcontratpedagogique': ('django.db.models.fields.FloatField', [], {'db_column': "'idContratPedagogique'"}),
-            'idmatiereyoratooid': ('django.db.models.fields.CharField', [], {'max_length': '30', 'db_column': "'idMatiereYoratooID'"})
+            'idcontratpedagogique': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Contratpedagogique']", 'primary_key': 'True', 'db_column': "'idContratPedagogique'"}),
+            'idmatiereyoratooid': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Matiere']", 'max_length': '30', 'primary_key': 'True', 'db_column': "'idMatiereYoratooID'"})
+        },
+        'studentapp.contratpedagogique': {
+            'Meta': {'object_name': 'Contratpedagogique', 'db_table': "u'contratpedagogique'"},
+            'credits': ('django.db.models.fields.FloatField', [], {'db_column': "'Credits'"}),
+            'idanneeuniversitaire': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Anneeuniversitaire']", 'db_column': "'idAnneeUniversitaire'"}),
+            'idcontratpedagogique': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idContratPedagogique'"}),
+            'idepoque': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Epoque']", 'db_column': "'idEpoque'"}),
+            'nom': ('django.db.models.fields.CharField', [], {'max_length': '60', 'db_column': "'Nom'"})
         },
         'studentapp.courseleve': {
             'Meta': {'object_name': 'CoursEleve', 'db_table': "u'cours_eleve'"},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idactivite': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idActivite'"}),
-            'ideleve': ('django.db.models.fields.FloatField', [], {'db_column': "'idEleve'"})
+            'idactivite': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Activite']", 'max_length': '24', 'primary_key': 'True', 'db_column': "'idActivite'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'primary_key': 'True', 'db_column': "'idEleve'"})
         },
         'studentapp.creditsetranger': {
             'Meta': {'object_name': 'CreditsEtranger', 'db_table': "u'credits_etranger'"},
@@ -553,16 +571,16 @@ class Migration(SchemaMigration):
             'credits': ('django.db.models.fields.IntegerField', [], {}),
             'date': ('django.db.models.fields.DateTimeField', [], {'db_column': "'Date'"}),
             'etablissement': ('django.db.models.fields.CharField', [], {'max_length': '120'}),
-            'ideleve': ('django.db.models.fields.FloatField', [], {'primary_key': 'True', 'db_column': "'idEleve'"}),
+            'idcreditsetranger': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idCreditsEtranger'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'db_column': "'idEleve'"}),
             'ip': ('django.db.models.fields.CharField', [], {'max_length': '45', 'db_column': "'IP'"})
         },
         'studentapp.dispense': {
             'Meta': {'object_name': 'Dispense', 'db_table': "u'dispense'"},
             'auteur': ('django.db.models.fields.CharField', [], {'max_length': '30', 'db_column': "'Auteur'"}),
-            'date': ('django.db.models.fields.DateTimeField', [], {'db_column': "'Date'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idactivite': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idActivite'"}),
-            'ideleve': ('django.db.models.fields.FloatField', [], {'db_column': "'idEleve'"}),
+            'date': ('django.db.models.fields.DateTimeField', [], {'primary_key': 'True', 'db_column': "'Date'"}),
+            'idactivite': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Activite']", 'max_length': '24', 'primary_key': 'True', 'db_column': "'idActivite'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'primary_key': 'True', 'db_column': "'idEleve'"}),
             'ip': ('django.db.models.fields.CharField', [], {'max_length': '45', 'db_column': "'IP'"}),
             'raison': ('django.db.models.fields.CharField', [], {'max_length': '120', 'db_column': "'Raison'"}),
             'type': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Type'"})
@@ -576,17 +594,17 @@ class Migration(SchemaMigration):
             'datenaissance': ('django.db.models.fields.DateField', [], {'db_column': "'DateNaissance'"}),
             'echange': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Echange'"}),
             'groupe': ('django.db.models.fields.IntegerField', [], {'db_column': "'Groupe'"}),
-            'ideleve': ('django.db.models.fields.FloatField', [], {'primary_key': 'True', 'db_column': "'idEleve'"}),
+            'ideleve': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idEleve'"}),
             'mail': ('django.db.models.fields.CharField', [], {'max_length': '150'}),
             'nom': ('django.db.models.fields.CharField', [], {'max_length': '120', 'db_column': "'Nom'"}),
             'nomreseau': ('django.db.models.fields.CharField', [], {'max_length': '90', 'db_column': "'NomReseau'"}),
             'origine': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Origine'"}),
             'tuteur': ('django.db.models.fields.CharField', [], {'max_length': '6', 'db_column': "'Tuteur'"}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Type'"})
+            'type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'max_length': '3', 'db_column': "'Type'"})
         },
         'studentapp.epoque': {
             'Meta': {'object_name': 'Epoque', 'db_table': "u'epoque'"},
-            'annee': ('django.db.models.fields.IntegerField', [], {'db_column': "'Annee'"}),
+            'annee': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Anneeuniversitaire']", 'db_column': "'Annee'"}),
             'idepoque': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idEpoque'"}),
             'nom': ('django.db.models.fields.CharField', [], {'max_length': '60', 'db_column': "'Nom'"}),
             'semestre': ('django.db.models.fields.IntegerField', [], {'db_column': "'Semestre'"})
@@ -594,8 +612,8 @@ class Migration(SchemaMigration):
         'studentapp.etudiantcontratpedagogique': {
             'Meta': {'object_name': 'EtudiantContratpedagogique', 'db_table': "u'etudiant_contratpedagogique'"},
             'classementvisible': ('django.db.models.fields.IntegerField', [], {'db_column': "'ClassementVisible'"}),
-            'idcontratpedagogique': ('django.db.models.fields.FloatField', [], {'db_column': "'idContratPedagogique'"}),
-            'ideleve': ('django.db.models.fields.FloatField', [], {'primary_key': 'True', 'db_column': "'idEleve'"}),
+            'idcontratpedagogique': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Contratpedagogique']", 'primary_key': 'True', 'db_column': "'idContratPedagogique'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'primary_key': 'True', 'db_column': "'idEleve'"}),
             'valide': ('django.db.models.fields.CharField', [], {'max_length': '1', 'db_column': "'Valide'"})
         },
         'studentapp.laniere': {
@@ -603,51 +621,48 @@ class Migration(SchemaMigration):
             'barreds': ('django.db.models.fields.FloatField', [], {'db_column': "'BarreDS'"}),
             'barregenerale': ('django.db.models.fields.FloatField', [], {'db_column': "'BarreGenerale'"}),
             'barretp': ('django.db.models.fields.FloatField', [], {'db_column': "'BarreTP'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idlaniere': ('django.db.models.fields.CharField', [], {'max_length': '9', 'db_column': "'idLaniere'"}),
+            'idlaniere': ('django.db.models.fields.CharField', [], {'max_length': '9', 'primary_key': 'True', 'db_column': "'idLaniere'"}),
             'nom': ('django.db.models.fields.CharField', [], {'max_length': '78', 'db_column': "'Nom'"}),
-            'nomen': ('django.db.models.fields.CharField', [], {'max_length': '150', 'db_column': "'NomEn'"}),
+            'nomen': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Profs']", 'max_length': '150', 'db_column': "'NomEn'"}),
             'nomreseau': ('django.db.models.fields.CharField', [], {'max_length': '45', 'db_column': "'NomReseau'"})
         },
         'studentapp.log': {
             'Meta': {'object_name': 'Log', 'db_table': "u'LOG'"},
             'action': ('django.db.models.fields.TextField', [], {'db_column': "'Action'"}),
             'auteur': ('django.db.models.fields.CharField', [], {'max_length': '30', 'db_column': "'Auteur'"}),
-            'date': ('django.db.models.fields.DateTimeField', [], {'db_column': "'Date'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'ip': ('django.db.models.fields.CharField', [], {'max_length': '45', 'db_column': "'IP'"})
+            'date': ('django.db.models.fields.DateTimeField', [], {'primary_key': 'True', 'db_column': "'Date'"}),
+            'ip': ('django.db.models.fields.CharField', [], {'max_length': '45', 'primary_key': 'True', 'db_column': "'IP'"})
         },
         'studentapp.logeleve': {
             'Meta': {'object_name': 'LogEleve', 'db_table': "u'LOG_eleve'"},
-            'date': ('django.db.models.fields.DateTimeField', [], {'db_column': "'Date'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'date': ('django.db.models.fields.DateTimeField', [], {'primary_key': 'True', 'db_column': "'Date'"}),
             'ip': ('django.db.models.fields.CharField', [], {'max_length': '45', 'db_column': "'IP'"}),
-            'user': ('django.db.models.fields.CharField', [], {'max_length': '60'})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.User']", 'max_length': '60', 'primary_key': 'True', 'db_column': "'uid'"})
         },
         'studentapp.matiere': {
             'Meta': {'object_name': 'Matiere', 'db_table': "u'matiere'"},
             'annee': ('django.db.models.fields.IntegerField', [], {'db_column': "'Annee'"}),
             'credits': ('django.db.models.fields.FloatField', [], {'db_column': "'Credits'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idlaniere': ('django.db.models.fields.CharField', [], {'max_length': '9', 'db_column': "'idLaniere'"}),
-            'idmatiere': ('django.db.models.fields.CharField', [], {'max_length': '18', 'db_column': "'idMatiere'"}),
+            'idlaniere': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Laniere']", 'max_length': '9', 'db_column': "'idLaniere'"}),
+            'idmatiere': ('django.db.models.fields.CharField', [], {'max_length': '18', 'primary_key': 'True', 'db_column': "'idMatiere'"}),
             'idmatiereyoratooid': ('django.db.models.fields.CharField', [], {'max_length': '30', 'db_column': "'idMatiereYoratooID'"}),
             'nom': ('django.db.models.fields.CharField', [], {'max_length': '210', 'db_column': "'Nom'"}),
             'nomen': ('django.db.models.fields.CharField', [], {'max_length': '150', 'db_column': "'NomEn'"})
         },
         'studentapp.messageseleve': {
             'Meta': {'object_name': 'MessagesEleve', 'db_table': "u'messages_eleve'"},
-            'annee': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Annee'"}),
+            'annee': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Anneeuniversitaire']", 'max_length': '3', 'db_column': "'Annee'"}),
             'date': ('django.db.models.fields.DateField', [], {'db_column': "'Date'"}),
             'idmessage': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'IDMessage'"}),
             'message': ('django.db.models.fields.CharField', [], {'max_length': '765', 'db_column': "'Message'"})
         },
         'studentapp.news': {
             'Meta': {'object_name': 'News', 'db_table': "u'news'"},
-            'annee': ('django.db.models.fields.IntegerField', [], {}),
+            'annee': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Anneeuniversitaire']", 'db_column': "'Anne'"}),
             'author': ('django.db.models.fields.CharField', [], {'max_length': '765'}),
-            'date': ('django.db.models.fields.DateTimeField', [], {'primary_key': 'True'}),
+            'date': ('django.db.models.fields.DateTimeField', [], {}),
             'description': ('django.db.models.fields.TextField', [], {}),
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idNews'"}),
             'link': ('django.db.models.fields.CharField', [], {'max_length': '765'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '765'})
         },
@@ -655,9 +670,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Note', 'db_table': "u'note'"},
             'auteur': ('django.db.models.fields.CharField', [], {'max_length': '30', 'db_column': "'Auteur'"}),
             'date': ('django.db.models.fields.DateTimeField', [], {'db_column': "'Date'"}),
-            'idactivite': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idActivite'"}),
-            'ideleve': ('django.db.models.fields.FloatField', [], {'db_column': "'idEleve'"}),
-            'idnote': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idNote'"}),
+            'idactivite': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Activite']", 'to_field': "'idactivite'", 'max_length': '24', 'db_column': "'idActivite'"}),
+            'ideleve': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Eleve']", 'primary_key': 'True', 'db_column': "'idEleve'"}),
             'ip': ('django.db.models.fields.CharField', [], {'max_length': '45', 'db_column': "'IP'"}),
             'note': ('django.db.models.fields.FloatField', [], {'db_column': "'Note'"}),
             'notenorm': ('django.db.models.fields.FloatField', [], {'db_column': "'NoteNorm'"}),
@@ -666,23 +680,21 @@ class Migration(SchemaMigration):
         },
         'studentapp.plage': {
             'Meta': {'object_name': 'Plage', 'db_table': "u'plage'"},
-            'annee': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Annee'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idactivite': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idActivite'"}),
-            'idplage': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idPlage'"}),
+            'annee': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Anneeuniversitaire']", 'max_length': '3', 'db_column': "'Annee'"}),
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idPlage'"}),
+            'idactivite': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Activite']", 'max_length': '24', 'db_column': "'idActivite'"}),
+            'idplage': ('django.db.models.fields.CharField', [], {'max_length': '24', 'primary_key': True, 'db_column': "'idPlage'"}),
             'jour': ('django.db.models.fields.IntegerField', [], {'db_column': "'Jour'"}),
             'semaine': ('django.db.models.fields.IntegerField', [], {'db_column': "'Semaine'"})
         },
         'studentapp.profactivite': {
             'Meta': {'object_name': 'Profactivite', 'db_table': "u'profactivite'"},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idactivite': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idActivite'"}),
-            'idprof': ('django.db.models.fields.CharField', [], {'max_length': '24', 'db_column': "'idProf'"})
+            'idactivite': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Activite']", 'max_length': '24', 'primary_key': 'True', 'db_column': "'idActivite'"}),
+            'idprof': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Profs']", 'max_length': '24', 'primary_key': 'True', 'db_column': "'idProf'"})
         },
         'studentapp.profs': {
             'Meta': {'object_name': 'Profs', 'db_table': "u'profs'"},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idprof': ('django.db.models.fields.CharField', [], {'max_length': '6', 'db_column': "'idProf'"}),
+            'idprof': ('django.db.models.fields.IntegerField', [], {'max_length': '6', 'primary_key': 'True', 'db_column': "'idProf'"}),
             'mail': ('django.db.models.fields.CharField', [], {'max_length': '765'}),
             'nom': ('django.db.models.fields.CharField', [], {'max_length': '60', 'db_column': "'Nom'"}),
             'nomreseau': ('django.db.models.fields.CharField', [], {'max_length': '45', 'db_column': "'NomReseau'"}),
@@ -691,26 +703,34 @@ class Migration(SchemaMigration):
         'studentapp.responsablelaniere': {
             'Meta': {'object_name': 'ResponsableLaniere', 'db_table': "u'responsable_laniere'"},
             'annee': ('django.db.models.fields.IntegerField', [], {'db_column': "'Annee'"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idlaniere': ('django.db.models.fields.CharField', [], {'max_length': '6', 'db_column': "'idLaniere'"}),
+            'idlaniere': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Laniere']", 'max_length': '6', 'primary_key': 'True', 'db_column': "'idLaniere'"}),
+            'idprof': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['studentapp.Profs']", 'primary_key': 'True', 'db_column': "'idProf'"}),
             'nomreseau': ('django.db.models.fields.CharField', [], {'max_length': '45', 'db_column': "'NomReseau'"})
         },
         'studentapp.typeactivite': {
             'Meta': {'object_name': 'Typeactivite', 'db_table': "u'typeactivite'"},
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idTypeActivite'"}),
             'nomactivite': ('django.db.models.fields.CharField', [], {'max_length': '60', 'db_column': "'NomActivite'"}),
             'type': ('django.db.models.fields.CharField', [], {'max_length': '3', 'primary_key': 'True', 'db_column': "'Type'"})
         },
         'studentapp.typeeleve': {
             'Meta': {'object_name': 'TypeEleve', 'db_table': "u'type_eleve'"},
             'description': ('django.db.models.fields.CharField', [], {'max_length': '90', 'db_column': "'Description'"}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '3', 'primary_key': 'True', 'db_column': "'Type'"})
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idTypeEleve'"}),
+            'type': ('django.db.models.fields.CharField', [], {'max_length': '3', 'db_column': "'Type'"})
         },
         'studentapp.user': {
             'Meta': {'object_name': 'User', 'db_table': "u'user'"},
+            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idUser'"}),
             'sno': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'uid': ('django.db.models.fields.CharField', [], {'max_length': '90', 'primary_key': 'True'}),
+            'uid': ('django.db.models.fields.CharField', [], {'max_length': '90'}),
             'upass': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'utype': ('django.db.models.fields.CharField', [], {'max_length': '6', 'blank': 'True'})
+        },
+        'studentapp.userprofile': {
+            'Meta': {'object_name': 'UserProfile'},
+            'id_from_ldap': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True', 'db_column': "'idUserProfile'"}),
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['studentapp.User']", 'unique': 'True'})
         }
     }
 

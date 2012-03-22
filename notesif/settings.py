@@ -1,4 +1,4 @@
-# Django settings for notesif project.
+#Django settings for notesif project.
 
 import os.path
 import settings_db
@@ -100,8 +100,11 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
 	'django.contrib.auth.backends.ModelBackend',
-	'django_cas.backends.CASBackend',
+	#'django_cas.backends.CASBackend',
+	'backend.PopulatedCASBackend',
 )
+
+AUTH_PROFILE_MODULE = 'studentapp.UserProfile'
 
 ROOT_URLCONF = 'notesif.urls'
 
