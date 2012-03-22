@@ -14,11 +14,11 @@
 			<thead>
 				<tr>
 					<th>Matières</th>
-					<th>Coefficient</th>
-					<th>Note</th>
-					<th>Minimum</th>
-					<th>Moyenne</th>
-					<th>Maximum</th>
+					<th class="notecol">Coefficient</th>
+					<th class="notecol">Note</th>
+					<th class="notecol">Minimum</th>
+					<th class="notecol">Moyenne</th>
+					<th class="notecol">Maximum</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -32,12 +32,12 @@
 				
 				{% for note in categorie.note_list %}
 				<tr>
-				  <td>{{ note.nom }}</td>
-				  <td>{{ note.coeff }}</td>
-				  <td>{{ note.value }}</td>
-				  <td>{{ note.min }}</td>
-				  <td>{{ note.moy }}</td>
-				  <td>{{ note.max }}</td>
+				  <td >{{ note.nom }}</td>
+				  <td class="notecol">{{ note.coeff }}</td>
+				  <td class="notecol">{{ note.value }}</td>
+				  <td class="notecol">{{ note.min }}</td>
+				  <td class="notecol">{{ note.moy }}</td>
+				  <td class="notecol">{{ note.max }}</td>
 				</tr>
 				{% endfor %}
 				

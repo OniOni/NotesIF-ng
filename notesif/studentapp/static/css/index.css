@@ -120,6 +120,7 @@ section#main-content {
 
 .laniere-group table {
 	border-collapse: collapse; 
+	width: 100%;
 }
 
 .laniere-group thead {
@@ -130,6 +131,14 @@ section#main-content {
 
 .laniere-group td,th {
 	border: 1px solid black;
+}
+
+.laniere-group th.notecol {
+    width: 100px;
+}
+
+.laniere-group td.notecol {
+    text-align: center;
 }
 
 footer {
