@@ -36,13 +36,8 @@ class Absence(models.Model):
         db_table = u'absence' 
 
 class Activite(models.Model):
-<<<<<<< HEAD
-    idactivite = models.CharField(max_length=24, db_column='idActivite', unique=True, primary_key=True) # Field name made lowercase.
-    idmatiere = models.ForeignKey('Matiere',max_length=18, db_column='idMatiere') # Field name made lowercase.
-=======
     idactivite = models.CharField(max_length=24, db_column='idActivite', unique=True) # Field name made lowercase.
     idmatiere = models.CharField('Matiere',max_length=18, db_column='idMatiere') # Field name made lowercase.
->>>>>>> 62d4cbe493722515b8c124ed2016aa14207c2c21
     type = models.ForeignKey('Typeactivite',max_length=3, db_column='Type') # Field name made lowercase.
     coefficient = models.FloatField(db_column='Coefficient') # Field name made lowercase.
     nom = models.CharField(max_length=768, db_column='Nom') # Field name made lowercase.
@@ -51,7 +46,6 @@ class Activite(models.Model):
     sans_note = models.IntegerField(db_column='SansNote') # Field name made lowercase.
     note_visible = models.CharField(max_length=1, db_column='NoteVisible') # Field name made lowercase.
     semestre = models.IntegerField(db_column='Semestre') # Field name made lowercase.
-    id = models.IntegerField(db_column='ID') # Field name made lowercase.
     class Meta:
         db_table = u'activite'
 
@@ -311,12 +305,7 @@ class TypeEleve(models.Model):
         db_table = u'type_eleve'
 
 class Typeactivite(models.Model):
-<<<<<<< HEAD
-    type = models.CharField(max_length=3, db_column='Type', unique=True) # Field name made lowercase.
-=======
-    #id = models.IntegerField(primary_key=True,db_column='idTypeActivite')
     type = models.CharField(max_length=3, primary_key=True, db_column='Type') # Field name made lowercase.
->>>>>>> 62d4cbe493722515b8c124ed2016aa14207c2c21
     nomactivite = models.CharField(max_length=60, db_column='NomActivite') # Field name made lowercase.
     class Meta:
         db_table = u'typeactivite'
