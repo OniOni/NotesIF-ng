@@ -118,17 +118,17 @@ section#main-content {
 .ValidationX { color : #FFFFFF;}
 .Validation { color : #000000;}
 
-.laniere_group table {
+.laniere-group table {
 	border-collapse: collapse; 
 }
 
-.laniere_group thead {
+.laniere-group thead {
 	background-color: #007020; 
 	color : white;
 	font-weight: bold;
 }
 
-.laniere_group td,th {
+.laniere-group td,th {
 	border: 1px solid black;
 }
 
