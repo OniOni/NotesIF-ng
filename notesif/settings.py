@@ -131,7 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'studentapp',
-    'south',
+#    'south',
     'django_cas',
 
     # Uncomment the next line to enable the admin:

@@ -25,7 +25,8 @@ class PopulatedCASBackend(CASBackend):
         else:
             print "User is not a Student"
             
-        user.id_from_ldap = u[0][1]['supannEtuId'][0]
+        user.get_profile().id_from_ldap = u[0][1]['supannEtuId'][0]
+        user.save()
         
         print user.username + " with id " + user.id_from_ldap + " just connected."
 

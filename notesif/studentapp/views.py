@@ -7,4 +7,4 @@ def home(request):
     print example
     plop.pprint_tab(example)
 
-    return render(request, "all.html", { "updated_time": datetime.datetime.now(), "laniere_dict": example})
+    return render(request, "all.html", { "updated_time": datetime.datetime.now(), "laniere_dict": example, "profile": request.user.get_profile()})
