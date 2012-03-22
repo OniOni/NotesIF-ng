@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 
 {%block content %}	
-{% for laniere_name,laniere in laniere_dic %}
+{% for laniere_name, laniere in laniere_dict.items %}
 
 
 	<div class="laniere-group">
@@ -22,12 +22,12 @@
 				</tr>
 			</thead>
 			<tbody>
-			{% for categorie_name,categorie in laniere.categories %}
+			{% for categorie_name,categorie in laniere.categories.items %}
 				<tr>
 					<th>Notes de {{ categorie_name }}</th>
 					<th>({{ categorie.coef }})</th>
 					<th>{{ categorie.moy }}</th>
-					<th colspan="3">Notes de {{ categorie_name }}</th>
+					<th colspan="3"></th>
 				</tr>
 				
 				{% for note in categorie.note_list %}
