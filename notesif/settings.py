@@ -100,7 +100,8 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
 	'django.contrib.auth.backends.ModelBackend',
-	'django_cas.backends.CASBackend',
+	#'django_cas.backends.CASBackend',
+	'backend.PopulatedCASBackend',
 )
 
 ROOT_URLCONF = 'notesif.urls'
