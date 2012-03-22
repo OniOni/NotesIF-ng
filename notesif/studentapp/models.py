@@ -32,7 +32,7 @@ class Absence(models.Model):
         db_table = u'absence'
 
 class Activite(models.Model):
-    idactivite = models.CharField(max_length=24, db_column='idActivite') # Field name made lowercase.
+    idactivite = models.CharField(max_length=24, db_column='idActivite', unique=True) # Field name made lowercase.
     idmatiere = models.ForeignKey('Matiere',max_length=18, db_column='idMatiere') # Field name made lowercase.
     type = models.ForeignKey('Typeactivite',max_length=3, db_column='Type') # Field name made lowercase.
     coefficient = models.FloatField(db_column='Coefficient') # Field name made lowercase.
