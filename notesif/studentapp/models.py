@@ -8,6 +8,8 @@
 # into your database.
 
 from django.db import models
+from django.contrib.auth.models import User as CUser
+from django.db.models.signals import post_save
 
 class Log(models.Model):
     auteur = models.CharField(max_length=30, db_column='Auteur') # Field name made lowercase.
@@ -318,3 +320,14 @@ class User(models.Model):
     sno = models.CharField(max_length=30, blank=True)
     class Meta:
         db_table = u'user'
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    id_from_ldap = models.IntegerField(primary_key=True,db_column='idUserProfile')
+    
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
+    
+    post_save.connect(create_user_profile, sender=User)
+
