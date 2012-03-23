@@ -17,13 +17,13 @@ class PopulatedCASBackend(CASBackend):
         
         if not u:
             print "User is not in LDAP..."
-        else:
-            print "User is in LDAP"
+        #else:
+        #    print "User is in LDAP"
 
-        if u[0][1]['employeeType'] == ['student']:
-            print "User is a Student"
-        else:
+        if u[0][1]['employeeType'] != ['student']:
             print "User is not a Student"
+        #else:
+        #    print "User is a Student"
             
         user.get_profile().id_from_ldap = u[0][1]['supannEtuId'][0]
         user.save()
